@@ -12,9 +12,9 @@ const LottoPurchaseInput = () => {
 
   return (
     <>
-      <Text type='body'>구입할 금액을 입력해주세요.</Text>
+      <Text type="body">구입할 금액을 입력해주세요.</Text>
       <div css={lottoPurchaseInputContainerStyle}>
-        <Input onChange={(e) => setAmount(e.target.value)} placeholder='금액' fullWidth />
+        <Input onChange={(e) => setAmount(e.target.value)} placeholder="금액" fullWidth />
         <Button onClick={() => buyLotto(Number(amount))}>구입</Button>
       </div>
     </>

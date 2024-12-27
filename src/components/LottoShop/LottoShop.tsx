@@ -47,7 +47,7 @@ const LottoShop = () => {
   return (
     <>
       <section css={lottoShopContainerStyle({ theme })}>
-        <Text type='title' textAlign='center'>
+        <Text type="title" textAlign="center">
           내 번호 당첨 확인
         </Text>
         <Spacing height={20} />

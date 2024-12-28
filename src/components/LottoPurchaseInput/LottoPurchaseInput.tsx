@@ -1,27 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 import Text from '../Text/Text';
 import { lottoPurchaseInputContainerStyle } from './LottoPurchaseInput.style';
+import useLottoAmount from '../../hooks/useLottoAmount';
 
 type Props = {
   buyLotto: (amount: number) => void;
-  amount: number;
-  errorMessage: string;
+  defaultAmount: number;
 };
 
-const LottoPurchaseInput = ({ buyLotto, errorMessage, amount: amountDefault }: Props) => {
-  const [amount, setAmount] = useState<string>('');
+const LottoPurchaseInputSection = ({ buyLotto, defaultAmount }: Props) => {
+  const { amount, handleAmount, errorMessage, clear, isValidAmount } = useLottoAmount();
 
   useEffect(() => {
-    setAmount(amountDefault === 0 ? '' : String(amountDefault));
-  }, [amountDefault]);
+    if (defaultAmount === 0) clear();
+  }, [defaultAmount]);
 
   const buy = () => {
-    if (errorMessage !== '') {
-      alert(errorMessage);
-      return;
-    }
+    if (!isValidAmount(Number(amount))) return;
 
     buyLotto(Number(amount));
   };
@@ -30,11 +27,12 @@ const LottoPurchaseInput = ({ buyLotto, errorMessage, amount: amountDefault }: P
     <div>
       <Text type='body'>구입할 금액을 입력해주세요.</Text>
       <div css={lottoPurchaseInputContainerStyle}>
-        <Input value={amount} onChange={(e) => setAmount(e.target.value)} placeholder='금액' fullWidth />
+        <Input value={amount} onChange={handleAmount} placeholder='금액' fullWidth />
         <Button onClick={buy}>구입</Button>
       </div>
+      <div>{errorMessage}</div>
     </div>
   );
 };
 
-export default LottoPurchaseInput;
+export default LottoPurchaseInputSection;

@@ -4,40 +4,35 @@ import { LottoAnswer } from '../../serviceType';
 import Input from '../Input/Input';
 import Text from '../Text/Text';
 import { bonusNumberInputStyle, lottoAnswerInputContainerStyle, lottoAnswerInputStyle } from './LottoAnswerInput.style';
+import Button from '../Button/Button';
+import useLottoAnswerInput from '../../hooks/useLottoAnswerInput';
 
 const LOTTO_INPUT_LIST = new Array(LOTTO_NUMBER_COUNT).fill(undefined);
 
 type Props = {
-  lottoAnswer: { numbers: string[]; bonusNumber: string };
-  setLottoAnswer: (lottoAnswer: { numbers: string[]; bonusNumber: string }) => void;
   lottoAnswerDefault?: LottoAnswer;
+  onSubmit: (lottoAnswer: LottoAnswer) => void;
 };
 
-const LottoAnswerInput = ({ lottoAnswer, setLottoAnswer, lottoAnswerDefault }: Props) => {
-  const { numbers, bonusNumber } = lottoAnswer;
+const LottoAnswerInputSection = ({ lottoAnswerDefault, onSubmit }: Props) => {
+  const { lottoAnswer, handleNumbers, handleBonusNumber, errorMessage, isValidLottoAnswer, clear } =
+    useLottoAnswerInput();
 
-  const handleNumberChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newNumbers = [...numbers];
-    newNumbers[index] = e.target.value;
+  const submit = () => {
+    if (!isValidLottoAnswer(lottoAnswer)) {
+      return;
+    }
 
-    setLottoAnswer({ numbers: newNumbers, bonusNumber });
-  };
-
-  const handleBonusNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLottoAnswer({ numbers, bonusNumber: e.target.value });
+    onSubmit({ numbers: lottoAnswer.numbers.map(Number), bonusNumber: Number(lottoAnswer.bonusNumber) });
   };
 
   useEffect(() => {
-    if (!lottoAnswerDefault) return;
-
-    if (lottoAnswerDefault.numbers.length === 0) {
-      setLottoAnswer({ numbers: new Array(6).fill(''), bonusNumber: '' });
-    }
-  }, [lottoAnswerDefault?.numbers]);
+    if (lottoAnswerDefault && lottoAnswerDefault.numbers.length === 0) clear();
+  }, [lottoAnswerDefault]);
 
   return (
     <>
-      <Text>지난 주 당첨번호 6개와 보너스 번호 1개를 입력해주세요.</Text>
+      <Text>지난 주 당첨번호 {LOTTO_NUMBER_COUNT}개와 보너스 번호 1개를 입력해주세요.</Text>
       <div css={lottoAnswerInputContainerStyle}>
         <div>
           <Text>당첨 번호</Text>
@@ -45,8 +40,8 @@ const LottoAnswerInput = ({ lottoAnswer, setLottoAnswer, lottoAnswerDefault }: P
             {LOTTO_INPUT_LIST.map((_, i) => (
               <Input
                 key={i}
-                value={numbers[i]}
-                onChange={(e) => handleNumberChange(i)(e)}
+                value={lottoAnswer.numbers[i]}
+                onChange={(e) => handleNumbers(e, i)}
                 type='number'
                 inputMode='numeric'
               />
@@ -56,11 +51,16 @@ const LottoAnswerInput = ({ lottoAnswer, setLottoAnswer, lottoAnswerDefault }: P
 
         <div css={bonusNumberInputStyle}>
           <Text>보너스 번호</Text>
-          <Input value={bonusNumber} onChange={handleBonusNumberChange} type='number' inputMode='numeric' />
+          <Input value={lottoAnswer.bonusNumber} onChange={handleBonusNumber} type='number' inputMode='numeric' />
         </div>
       </div>
+
+      <div>{errorMessage}</div>
+      <Button onClick={submit} fullWidth>
+        결과 확인하기
+      </Button>
     </>
   );
 };
 
-export default LottoAnswerInput;
+export default LottoAnswerInputSection;

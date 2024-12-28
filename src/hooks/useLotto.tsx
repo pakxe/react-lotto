@@ -2,8 +2,8 @@ import useLottoAnswer from './useLottoAnswer';
 import useLottoShop from './useLottoShop';
 
 const useLotto = () => {
-  const { lottoAnswer, updateLottoAnswer, clearLottoAnswer, errorMessage: lottoAnswerErrorMessage } = useLottoAnswer();
-  const { buyLotto, lottos, amount, clearLottoShop, errorMessage: amountErrorMessage } = useLottoShop();
+  const { lottoAnswer, updateLottoAnswer, clearLottoAnswer } = useLottoAnswer();
+  const { buyLotto, lottos, clearLottoShop, amount } = useLottoShop();
 
   const clear = () => {
     clearLottoShop();
@@ -15,10 +15,8 @@ const useLotto = () => {
     updateLottoAnswer,
     buyLotto,
     lottos,
-    amount,
     clear,
-    amountErrorMessage,
-    lottoAnswerErrorMessage,
+    amount,
   };
 };
 

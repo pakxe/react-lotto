@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import { LOTTO_NUMBER_COUNT } from '../../constants/lotto';
-import { LottoNumber } from '../../serviceType';
+import { LottoAnswer } from '../../serviceType';
 import Input from '../Input/Input';
 import Text from '../Text/Text';
 import { bonusNumberInputStyle, lottoAnswerInputContainerStyle, lottoAnswerInputStyle } from './LottoAnswerInput.style';
@@ -7,25 +8,32 @@ import { bonusNumberInputStyle, lottoAnswerInputContainerStyle, lottoAnswerInput
 const LOTTO_INPUT_LIST = new Array(LOTTO_NUMBER_COUNT).fill(undefined);
 
 type Props = {
-  lottoNumbers: {
-    numbers: LottoNumber[];
-    bonusNumber: LottoNumber;
-  };
-  setLottoNumbers: (lottoNumbers: { numbers: LottoNumber[]; bonusNumber: LottoNumber }) => void;
+  lottoAnswer: { numbers: string[]; bonusNumber: string };
+  setLottoAnswer: (lottoAnswer: { numbers: string[]; bonusNumber: string }) => void;
+  lottoAnswerDefault?: LottoAnswer;
 };
-const LottoAnswerInput = ({ lottoNumbers, setLottoNumbers }: Props) => {
-  const { numbers, bonusNumber } = lottoNumbers;
+
+const LottoAnswerInput = ({ lottoAnswer, setLottoAnswer, lottoAnswerDefault }: Props) => {
+  const { numbers, bonusNumber } = lottoAnswer;
 
   const handleNumberChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const newNumbers = [...numbers];
-    newNumbers[index] = +e.target.value;
+    newNumbers[index] = e.target.value;
 
-    setLottoNumbers({ numbers: newNumbers, bonusNumber });
+    setLottoAnswer({ numbers: newNumbers, bonusNumber });
   };
 
   const handleBonusNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLottoNumbers({ numbers, bonusNumber: +e.target.value });
+    setLottoAnswer({ numbers, bonusNumber: e.target.value });
   };
+
+  useEffect(() => {
+    if (!lottoAnswerDefault) return;
+
+    if (lottoAnswerDefault.numbers.length === 0) {
+      setLottoAnswer({ numbers: new Array(6).fill(''), bonusNumber: '' });
+    }
+  }, [lottoAnswerDefault?.numbers]);
 
   return (
     <>

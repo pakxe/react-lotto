@@ -1,11 +1,9 @@
 import { useTheme } from '@emotion/react';
 import Text from '../Text/Text';
 import { lottoShopContainerStyle } from './LottoShop.style';
-import Button from '../Button/Button';
 import LottoList from '../LottoList/LottoList';
 import LottoAnswerInputSection from '../LottoAnswerInput/LottoAnswerInput';
 import LottoPurchaseInputSection from '../LottoPurchaseInput/LottoPurchaseInput';
-import { useState } from 'react';
 import useLottoResultBottomSheet from '../../hooks/useLottoResultBottomSheet';
 import { useLottoContext } from '../../contexts/LottoContext';
 import { LottoAnswer } from '../../serviceType';
@@ -13,7 +11,7 @@ import { LottoAnswer } from '../../serviceType';
 const LottoShop = () => {
   const { open } = useLottoResultBottomSheet();
   const theme = useTheme();
-  const { updateLottoAnswer, lottos, buyLotto, lottoAnswer, lottoAnswerErrorMessage, amount } = useLottoContext();
+  const { updateLottoAnswer, lottos, buyLotto, lottoAnswer, amount } = useLottoContext();
 
   const checkResult = (lottoAnswer: LottoAnswer) => {
     open();

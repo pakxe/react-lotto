@@ -7,30 +7,39 @@ import { Theme } from '@emotion/react/dist/declarations/src';
 // TODO: 리펙
 type Props = WithChildren & {
   cssStyle?: Interpolation<Theme>;
-  closeBottomSheet: () => void;
+  close: () => void;
+  isOpen: boolean;
 };
 
-const BottomSheet = ({ children, cssStyle, closeBottomSheet }: Props) => {
+const BottomSheet = ({ children, cssStyle, close, isOpen }: Props) => {
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <Dimmer>
-      <BottomSheetContainer cssStyle={cssStyle} closeBottomSheet={closeBottomSheet}>
+    <Dimmer close={close}>
+      <BottomSheetContainer cssStyle={cssStyle} close={close}>
         {children}
       </BottomSheetContainer>
     </Dimmer>
   );
 };
 
-function Dimmer({ children }: WithChildren) {
-  return <div css={dimmerStyle}>{children}</div>;
+function Dimmer({ children, close }: Omit<Props, 'cssStyle' | 'isOpen'>) {
+  return (
+    <div onClick={close} css={dimmerStyle}>
+      {children}
+    </div>
+  );
 }
 
-function BottomSheetContainer({ children, cssStyle, closeBottomSheet }: Props) {
+function BottomSheetContainer({ children, cssStyle, close }: Omit<Props, 'isOpen'>) {
   const theme = useTheme();
 
   return (
     <div css={[bottomSheetContainerStyle({ theme }), cssStyle]}>
       {children}
-      <Icon name='x' onClick={closeBottomSheet} css={closeModalButtonStyle} />
+      <Icon name='x' onClick={close} css={closeModalButtonStyle} />
     </div>
   );
 }

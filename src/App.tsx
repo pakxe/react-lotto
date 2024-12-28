@@ -5,8 +5,8 @@ import Footer from './components/Footer/Footer';
 import { GlobalStyle } from './GlobalStyle';
 import Layout from './components/Layout/Layout';
 import LottoShop from './components/LottoShop/LottoShop';
-import { LottoProvider } from './hooks/useLotto';
 import { BottomSheetProvider } from './hooks/useBottomSheet';
+import { LottoProvider } from './contexts/LottoContext';
 
 const App = () => {
   return (

@@ -38,13 +38,7 @@ const LottoAnswerInputSection = ({ lottoAnswerDefault, onSubmit }: Props) => {
           <Text>당첨 번호</Text>
           <ol css={lottoAnswerInputStyle}>
             {LOTTO_INPUT_LIST.map((_, i) => (
-              <Input
-                key={i}
-                value={lottoAnswer.numbers[i]}
-                onChange={(e) => handleNumbers(e, i)}
-                type='number'
-                inputMode='numeric'
-              />
+              <Input key={i} value={lottoAnswer.numbers[i]} onChange={(e) => handleNumbers(e, i)} inputMode='numeric' />
             ))}
           </ol>
         </div>

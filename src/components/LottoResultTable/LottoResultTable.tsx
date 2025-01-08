@@ -21,11 +21,12 @@ const REWARD_TABLE = LOTTO_REWARDS.map((reward, index) => {
   };
 });
 
-const LottoResultTable = () => {
-  const theme = useTheme();
+type LottoResultTableProps = {
+  matchCount: number[];
+};
 
-  const { lottoAnswer, lottos } = useLottoContext();
-  const matchCountResult = calcMatchCountResult({ ...lottoAnswer, lottos });
+const LottoResultTable = ({ matchCount }: LottoResultTableProps) => {
+  const theme = useTheme();
 
   return (
     <table css={lottoResultTableStyle({ theme })}>
@@ -41,7 +42,7 @@ const LottoResultTable = () => {
           <tr key={name}>
             <td>{name}</td>
             <td>{reward.toLocaleString('ko-kr')}</td>
-            <td>{matchCountResult[index]}개</td>
+            <td>{matchCount[index]}개</td>
           </tr>
         ))}
       </tbody>

@@ -30,8 +30,8 @@ const tableStyle = ({ theme }: WithTheme) =>
     },
   });
 
-const lottoResultBottomSheetStyle = {
+const lottoResultModalStyle = {
   tableStyle,
 };
 
-export { lottoResultBottomSheetStyle };
+export { lottoResultModalStyle };

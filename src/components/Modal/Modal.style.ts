@@ -17,7 +17,7 @@ const dimmerStyle = () =>
     alignItems: 'center',
   });
 
-const bottomSheetContainerStyle = ({ theme }: WithTheme) =>
+const modalContainerStyle = ({ theme }: WithTheme) =>
   css({
     position: 'relative',
 
@@ -38,4 +38,4 @@ const closeModalButtonStyle = () =>
     top: '16px',
     right: '16px',
   });
-export { dimmerStyle, bottomSheetContainerStyle, closeModalButtonStyle };
+export { dimmerStyle, modalContainerStyle, closeModalButtonStyle };

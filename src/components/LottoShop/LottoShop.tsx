@@ -4,12 +4,12 @@ import { lottoShopContainerStyle } from './LottoShop.style';
 import LottoList from '../LottoList/LottoList';
 import LottoAnswerInputSection from '../LottoAnswerInput/LottoAnswerInput';
 import LottoPurchaseInputSection from '../LottoPurchaseInput/LottoPurchaseInput';
-import useLottoResultBottomSheet from '../../hooks/useLottoResultBottomSheet';
+import useLottoResultModal from '../../hooks/useLottoResultModal';
 import { useLottoContext } from '../../contexts/LottoContext';
 import { LottoAnswer } from '../../serviceType';
 
 const LottoShop = () => {
-  const { open } = useLottoResultBottomSheet();
+  const { open } = useLottoResultModal();
   const theme = useTheme();
   const { updateLottoAnswer, lottos, buyLotto, lottoAnswer, amount } = useLottoContext();
 

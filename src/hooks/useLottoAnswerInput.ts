@@ -2,9 +2,16 @@ import { ChangeEvent, useState } from 'react';
 import isInRange from '../utils/isInRange';
 import { LOTTO_NUMBER_COUNT, LOTTO_RANGE } from '../constants/lotto';
 
+const isValidRange = (numbers: string[], bonusNumber: string) => {
+  return (
+    !numbers.every((number) => isInRange(Number(number), LOTTO_RANGE.MIN, LOTTO_RANGE.MAX)) ||
+    !isInRange(Number(bonusNumber), LOTTO_RANGE.MIN, LOTTO_RANGE.MAX)
+  );
+};
+
 const useLottoAnswerInput = () => {
   const [lottoAnswer, setLottoAnswer] = useState<{ numbers: string[]; bonusNumber: string }>({
-    numbers: new Array(6).fill(''),
+    numbers: new Array(LOTTO_NUMBER_COUNT).fill(''),
     bonusNumber: '',
   });
   const [errorMessage, setErrorMessage] = useState('');
@@ -26,12 +33,10 @@ const useLottoAnswerInput = () => {
       return;
     }
 
-    const prevNumbers = lottoAnswer.numbers;
-    prevNumbers[index] = newValue;
-
+    setErrorMessage('');
     setLottoAnswer((prev) => ({
       ...prev,
-      numbers: prevNumbers,
+      numbers: prev.numbers.map((num, i) => (i === index ? newValue : num)),
     }));
   };
 
@@ -53,11 +58,8 @@ const useLottoAnswerInput = () => {
   const isValidLottoAnswer = (lottoAnswer: { numbers: string[]; bonusNumber: string }) => {
     const { numbers, bonusNumber } = lottoAnswer;
 
-    if (
-      !numbers.every((number) => isInRange(Number(number), LOTTO_RANGE.min, LOTTO_RANGE.max)) ||
-      !isInRange(Number(bonusNumber), LOTTO_RANGE.min, LOTTO_RANGE.max)
-    ) {
-      setErrorMessage(`로또 번호는 ${LOTTO_RANGE.min}~${LOTTO_RANGE.max} 사이의 숫자입니다.`);
+    if (isValidRange(numbers, bonusNumber)) {
+      setErrorMessage(`로또 번호는 ${LOTTO_RANGE.MIN}~${LOTTO_RANGE.MAX} 사이의 숫자입니다.`);
       return false;
     }
 
@@ -75,7 +77,7 @@ const useLottoAnswerInput = () => {
   };
 
   const clear = () => {
-    setLottoAnswer({ numbers: new Array(6).fill(''), bonusNumber: '' });
+    setLottoAnswer({ numbers: new Array(LOTTO_NUMBER_COUNT).fill(''), bonusNumber: '' });
     setErrorMessage('');
   };
 

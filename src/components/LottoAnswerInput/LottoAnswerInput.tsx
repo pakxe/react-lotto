@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { LOTTO_NUMBER_COUNT } from '../../constants/lotto';
 import { LottoAnswer } from '../../serviceType';
 import Input from '../Input/Input';
@@ -15,8 +14,8 @@ type Props = {
 };
 
 const LottoAnswerInputSection = ({ lottoAnswerDefault, onSubmit }: Props) => {
-  const { lottoAnswer, handleNumbers, handleBonusNumber, errorMessage, isValidLottoAnswer, clear } =
-    useLottoAnswerInput();
+  const { lottoAnswer, handleNumbers, handleBonusNumber, errorMessage, isValidLottoAnswer } =
+    useLottoAnswerInput(lottoAnswerDefault);
 
   const submit = () => {
     if (!isValidLottoAnswer(lottoAnswer)) {
@@ -25,10 +24,6 @@ const LottoAnswerInputSection = ({ lottoAnswerDefault, onSubmit }: Props) => {
 
     onSubmit({ numbers: lottoAnswer.numbers.map(Number), bonusNumber: Number(lottoAnswer.bonusNumber) });
   };
-
-  useEffect(() => {
-    if (lottoAnswerDefault && lottoAnswerDefault.numbers.length === 0) clear();
-  }, [lottoAnswerDefault]);
 
   return (
     <>

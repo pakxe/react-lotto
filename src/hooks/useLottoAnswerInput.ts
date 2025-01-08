@@ -1,6 +1,7 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import isInRange from '../utils/isInRange';
 import { LOTTO_NUMBER_COUNT, LOTTO_RANGE } from '../constants/lotto';
+import { LottoAnswer } from '../serviceType';
 
 const isValidRange = (numbers: string[], bonusNumber: string) => {
   return (
@@ -9,11 +10,18 @@ const isValidRange = (numbers: string[], bonusNumber: string) => {
   );
 };
 
-const useLottoAnswerInput = () => {
-  const [lottoAnswer, setLottoAnswer] = useState<{ numbers: string[]; bonusNumber: string }>({
-    numbers: new Array(LOTTO_NUMBER_COUNT).fill(''),
-    bonusNumber: '',
-  });
+const useLottoAnswerInput = (lottoAnswerDefault?: LottoAnswer) => {
+  const [lottoAnswer, setLottoAnswer] = useState<{ numbers: string[]; bonusNumber: string }>(
+    lottoAnswerDefault
+      ? {
+          numbers: lottoAnswerDefault.numbers.map(String),
+          bonusNumber: String(lottoAnswerDefault.bonusNumber),
+        }
+      : {
+          numbers: new Array(LOTTO_NUMBER_COUNT).fill(''),
+          bonusNumber: '',
+        },
+  );
   const [errorMessage, setErrorMessage] = useState('');
 
   const checkErrorMessage = (value: string) => {
@@ -81,13 +89,16 @@ const useLottoAnswerInput = () => {
     setErrorMessage('');
   };
 
+  useEffect(() => {
+    if (lottoAnswerDefault && lottoAnswerDefault.numbers.length === 0) clear();
+  }, [lottoAnswerDefault?.numbers, lottoAnswerDefault?.bonusNumber]);
+
   return {
     handleNumbers,
     handleBonusNumber,
     isValidLottoAnswer,
     errorMessage,
     lottoAnswer,
-    clear,
   };
 };
 

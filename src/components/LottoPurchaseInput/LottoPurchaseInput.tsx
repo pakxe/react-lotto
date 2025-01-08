@@ -1,21 +1,16 @@
-import { useEffect } from 'react';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 import Text from '../Text/Text';
 import { lottoPurchaseInputContainerStyle } from './LottoPurchaseInput.style';
-import useLottoAmount from '../../hooks/useLottoAmount';
+import useLottoAmountInput from '../../hooks/useLottoAmountInput';
 
 type Props = {
   buyLotto: (amount: number) => void;
-  defaultAmount: number;
+  defaultAmount?: number;
 };
 
 const LottoPurchaseInputSection = ({ buyLotto, defaultAmount }: Props) => {
-  const { amount, handleAmount, errorMessage, clear, isValidAmount } = useLottoAmount();
-
-  useEffect(() => {
-    if (defaultAmount === 0) clear();
-  }, [defaultAmount]);
+  const { amount, errorMessage, handleAmount, isValidAmount } = useLottoAmountInput(defaultAmount);
 
   const buy = () => {
     if (!isValidAmount(Number(amount))) return;
